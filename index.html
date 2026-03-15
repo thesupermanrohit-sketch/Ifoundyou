@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>I Found You</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400&family=Caveat:wght@400;600&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -467,11 +467,56 @@
       line-height: 1.85;
     }
 
-    .heart-final {
+    .heart-wrap {
+      display: inline-block;
+      position: relative;
       margin-top: 52px;
+    }
+
+    .heart-final {
       font-size: 2.5rem;
       display: block;
       animation: heartbeat 1.4s ease-in-out infinite;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      user-select: none;
+    }
+
+    .heart-final:hover {
+      transform: scale(1.15);
+    }
+
+    .heart-final.playing {
+      animation: heartbeat-fast 0.8s ease-in-out infinite;
+      filter: drop-shadow(0 0 12px rgba(232, 184, 154, 0.7));
+    }
+
+    .click-annotation {
+      position: absolute;
+      top: -20px;
+      left: calc(100% + 10px);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: none;
+      width: max-content;
+    }
+
+    .click-annotation-text {
+      font-family: 'Caveat', cursive;
+      font-size: 1.4rem;
+      color: var(--warm);
+      line-height: 1;
+      white-space: nowrap;
+      transform: rotate(5deg);
+    }
+
+    .click-arrow {
+      font-size: 1.8rem;
+      color: var(--warm);
+      margin-top: 15px;
+      opacity: 0.9;
+      transform: scaleX(-1) rotate(20deg);
     }
 
     @keyframes heartbeat {
@@ -479,6 +524,14 @@
       14% { transform: scale(1.2); }
       28% { transform: scale(1); }
       42% { transform: scale(1.15); }
+      56% { transform: scale(1); }
+    }
+
+    @keyframes heartbeat-fast {
+      0%, 100% { transform: scale(1); }
+      14% { transform: scale(1.3); }
+      28% { transform: scale(1); }
+      42% { transform: scale(1.2); }
       56% { transform: scale(1); }
     }
 
@@ -602,7 +655,16 @@
         <p class="eyebrow">and that's everything</p>
         <h2>Lucky me.<br>I <em>found</em> you.</h2>
         <p>No special occasion. No reason. Just wanted you to know that finding you is the best thing that's ever happened to me.</p>
-        <span class="heart-final">♡</span>
+        <div class="heart-wrap">
+          <div class="click-annotation">
+            <span class="click-arrow">⤷</span>
+            <span class="click-annotation-text">click here</span>
+          </div>
+          <span class="heart-final" id="heartBtn">♡</span>
+        </div>
+        <audio id="bgMusic" loop>
+          <source src="assets/music/Bauna kitna bauna hai …… [fTe6uZJzILg].mp3" type="audio/mpeg">
+        </audio>
       </div>
     </div>
   </section>
@@ -676,6 +738,25 @@
       wrap.appendChild(bar);
       wrap.appendChild(lbl);
       rulerWrap.appendChild(wrap);
+    });
+
+    // Heart music toggle
+    const heartBtn = document.getElementById('heartBtn');
+    const bgMusic = document.getElementById('bgMusic');
+    let isPlaying = false;
+    heartBtn.addEventListener('click', () => {
+      if (isPlaying) {
+        bgMusic.pause();
+        heartBtn.classList.remove('playing');
+        heartBtn.textContent = '♡';
+        isPlaying = false;
+      } else {
+        bgMusic.play().then(() => {
+          heartBtn.classList.add('playing');
+          heartBtn.textContent = '♥';
+          isPlaying = true;
+        }).catch(() => {});
+      }
     });
   </script>
 </body>
