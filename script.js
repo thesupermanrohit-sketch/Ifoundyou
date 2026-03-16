@@ -58,25 +58,26 @@ bars.forEach((b, i) => {
   rulerWrap.appendChild(wrap);
 });
 
-// Heart music toggle — 80/20 randomized song selection on each play
+// Heart music toggle — fully random song selection on each play
 const heartBtn = document.getElementById('heartBtn');
 const bgMusic = document.getElementById('bgMusic');
 
-const SONG_MAIN  = 'assets/music/Kya Maine Koi Mangi Dua  Sonu Nigam  Iss Tarah  Love Song  Whatsapp Status  Lyrics Song Status - Dhruv Creation.mp3';
-const SONG_FUNNY = 'assets/music/Bauna kitna bauna hai …… [fTe6uZJzILg].mp3';
+const SONGS = [
+  'assets/music/Kya Maine Koi Mangi Dua  Sonu Nigam  Iss Tarah  Love Song  Whatsapp Status  Lyrics Song Status - Dhruv Creation.mp3',
+  'assets/music/Bauna kitna bauna hai …… [fTe6uZJzILg].mp3',
+];
 
 let isPlaying = false;
 
 heartBtn.addEventListener('click', () => {
   if (isPlaying) {
-    // Even click → just pause
     bgMusic.pause();
     heartBtn.classList.remove('playing');
     heartBtn.textContent = '♡';
     isPlaying = false;
   } else {
-    // Odd click → pick song with 80/20 probability, then play
-    const chosen = Math.random() < 0.8 ? SONG_MAIN : SONG_FUNNY;
+    // Pick a random song from the pool each time
+    const chosen = SONGS[Math.floor(Math.random() * SONGS.length)];
     bgMusic.src = chosen;
     bgMusic.load();
     bgMusic.play().then(() => {
