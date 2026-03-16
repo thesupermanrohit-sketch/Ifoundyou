@@ -255,10 +255,13 @@ section {
   width: auto;
 }
 
-.joke-card .big-emoji {
-  font-size: 3.5rem;
+.joke-card-img {
+  width: 100px;
+  height: auto;
   margin-bottom: 20px;
   display: block;
+  margin-left: auto;
+  margin-right: auto;
   animation: bounce 2s ease-in-out infinite;
 }
 
